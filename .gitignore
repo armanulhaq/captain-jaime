@@ -1,0 +1,53 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build output
+/dist/
+/build/
+/.next/
+.next/
+coverage/
+
+# Mac system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# VSCode and JetBrains IDEs
+.vscode/
+.idea/
+
+# OS generated files
+Thumbs.db
+Desktop.ini
+
+# dotenv environment files
+.env*
+
+# Log files
+*.log
+
+# Misc
+*.swp
+*.swo
+
+# Ignore by mistake
+.DS_Store
+.DS_Store?
+
+# Ignore test coverage
+coverage/
+
+# Ignore build artifacts
+*.tgz
+
+# Ignore local config
+*.local
+
+# Ignore lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
