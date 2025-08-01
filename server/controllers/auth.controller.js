@@ -1,6 +1,6 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcrypt";
-import { setUser } from "../middlewares/auth.js";
+import { getUser, setUser } from "../middlewares/auth.js";
 
 const register = async (req, res) => {
     const { name, age, email, password, gender } = req.body;
@@ -74,7 +74,12 @@ const login = async (req, res) => {
     }
 };
 
-const authMe = () => {};
+const authMe = (req, res) => {
+    const token = req.cookies.token;
+    const user = getUser(token);
+    req.user = user;
+    return res.status(200).json({ user: user });
+};
 
 const logout = () => {};
 

@@ -2,6 +2,7 @@ import "./App.css";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import Chat from "./pages/Login";
 import { Routes, Route } from "react-router-dom";
 import { useState } from "react";
 import Navbar from "./components/Navbar";
@@ -18,6 +19,7 @@ function App() {
                     element={<Register isDark={isDark} />}
                 />
                 <Route path="/login" element={<Login isDark={isDark} />} />
+                <Route path="/chat" element={<Chat isDark={isDark} />} />
             </Routes>
         </>
     );

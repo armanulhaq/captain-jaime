@@ -17,7 +17,7 @@ const Home = ({ isDark }) => {
                     />
                 </div>
 
-                <div className="flex-1 flex flex-col gap-6">
+                <div className="flex-1 flex flex-col gap-3 lg:gap-4 xl:gap-6">
                     <h1 className="font-extrabold text-3xl md:text-3xl xl:text-5xl lg:text-6xl leading-tight text-[#6e44ff]">
                         Hi! I’m Captain Jaime
                     </h1>
@@ -34,7 +34,7 @@ const Home = ({ isDark }) => {
 
                     <button
                         onClick={() => navigate("/register")}
-                        className={`bg-[#6e44ff] hover:bg-[#6e44ff]/90 px-6 py-4 text-xl rounded-lg font-semibold w-fit mt-4 cursor-pointer text-white ${
+                        className={`bg-[#6e44ff] hover:bg-[#6e44ff]/90 px-3 py-2 xl:px-6 xl:py-3 text-md md:text-lg xl:text-xl rounded-lg font-semibold w-fit mt-2 cursor-pointer text-white ${
                             isDark
                                 ? "bg-[#6e44ff] hover:bg-[#6e44ff]/90"
                                 : "bg-[#6e44ff] hover:bg-[#6e44ff]/90"
