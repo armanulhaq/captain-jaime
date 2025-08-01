@@ -1,25 +1,62 @@
-import { User, Mail, Lock } from "lucide-react";
+import { User, Mail, Lock, Cake } from "lucide-react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Register = ({ isDark }) => {
+    const [email, setEmail] = useState("");
+    const [age, setAge] = useState(1);
+    const [name, setName] = useState("");
+    const [password, setPassword] = useState("");
+    const [errorMsg, setErrorMsg] = useState("");
+    const [loading, setLoading] = useState(false);
+
     const navigate = useNavigate();
 
+    const onSubmitHandler = async (e) => {
+        e.preventDefault();
+        try {
+            setLoading(true);
+            const res = await fetch(
+                `${import.meta.env.VITE_BACKEND_URL}/api/auth/register`,
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ name, age, email, password }),
+                }
+            );
+
+            const data = await res.json();
+            if (!res.ok) {
+                setErrorMsg(data.message);
+                throw new Error(data.message || "Something went wrong");
+            }
+            setEmail("");
+            setPassword("");
+            setName("");
+            setAge(1);
+            setLoading(false);
+            navigate("/login");
+        } catch (err) {
+            console.error("Registration error:", err.message);
+            setErrorMsg(err.message);
+        }
+    };
     return (
         <div
-            className={`min-h-[90dvh] flex flex-col ${
+            className={`min-h-[90dvh] flex flex-col px-10 md:px-0 ${
                 isDark ? "bg-[#10002b]" : "bg-[#f8f7ff]"
             }`}
         >
             <div className="flex flex-col lg:flex-row w-full max-w-4xl min-h-[70dvh] mx-auto rounded-xl my-10 shadow-lg overflow-hidden">
                 {/* Image Section */}
                 <div
-                    className={`flex-1 flex items-center justify-center p-4 ${
+                    className={`flex-1 flex items-center justify-center px-4 ${
                         isDark ? "bg-[#1a1333]" : "bg-[#6e44ff]"
                     }`}
                 >
                     <img
                         className="rounded-lg max-w-xs w-3/4 md:w-4/5 h-auto drop-shadow-xl"
-                        src="https://images.squarespace-cdn.com/content/v1/663f738a89dc02694adb8670/ab586c91-6b0b-4791-aa5a-b60824f92094/OIIA-Website-loop.gif?format=2500w"
+                        src="/OIAA.gif"
                         alt="OIAA CAT Image"
                     />
                 </div>
@@ -30,8 +67,8 @@ const Register = ({ isDark }) => {
                     }`}
                 >
                     <form
+                        onSubmit={onSubmitHandler}
                         className="w-full max-w-xs flex flex-col items-center justify-center"
-                        onSubmit={(e) => e.preventDefault()}
                     >
                         <h2
                             className={`text-3xl md:text-4xl font-bold flex justify-center items-center gap-2 ${
@@ -62,7 +99,9 @@ const Register = ({ isDark }) => {
                             />
                             <input
                                 type="text"
-                                placeholder="What's your pirate name?"
+                                onChange={(e) => setName(e.target.value)}
+                                value={name}
+                                placeholder="What's your name?"
                                 className={`bg-transparent outline-none text-sm w-full h-full px-5 ${
                                     isDark
                                         ? "text-gray-100 placeholder-gray-400"
@@ -71,6 +110,33 @@ const Register = ({ isDark }) => {
                                 style={{ background: "transparent" }}
                                 required
                                 maxLength={20}
+                            />
+                        </div>
+                        {/* Age Field */}
+                        <div
+                            className={`flex items-center mt-6 w-full border-1 border-[#6e44ff] h-12 pl-3 gap-2 rounded-md transition-colors ${
+                                isDark ? "bg-[#23144a]" : "bg-white"
+                            }`}
+                        >
+                            <Cake
+                                className={`w-6 h-6 ${
+                                    isDark ? "text-[#a9baff]" : "text-[#6e44ff]"
+                                }`}
+                            />
+                            <input
+                                value={age}
+                                onChange={(e) => setAge(Number(e.target.value))}
+                                type="number"
+                                placeholder="What's your age?"
+                                className={`bg-transparent outline-none text-sm w-full h-full px-5 ${
+                                    isDark
+                                        ? "text-gray-100 placeholder-gray-400"
+                                        : "text-gray-700 placeholder-gray-400"
+                                }`}
+                                style={{ background: "transparent" }}
+                                required
+                                min={4}
+                                max={100}
                             />
                         </div>
 
@@ -86,6 +152,8 @@ const Register = ({ isDark }) => {
                                 }`}
                             />
                             <input
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                                 type="email"
                                 placeholder="Your pirate email"
                                 className={`bg-transparent outline-none text-sm w-full h-full px-5 rounded-r-md ${
@@ -110,8 +178,10 @@ const Register = ({ isDark }) => {
                                 }`}
                             />
                             <input
+                                onChange={(e) => setPassword(e.target.value)}
+                                value={password}
                                 type="password"
-                                placeholder="Choose your secret code"
+                                placeholder="Enter your password"
                                 className={`bg-transparent outline-none text-sm w-full h-full px-5 rounded-r-md ${
                                     isDark
                                         ? "text-gray-100 placeholder-gray-400"
@@ -122,13 +192,19 @@ const Register = ({ isDark }) => {
                                 minLength={6}
                             />
                         </div>
+                        {errorMsg && (
+                            <p className="text-red-500 mt-3 text-xs">
+                                {errorMsg}
+                            </p>
+                        )}
 
                         {/* Button */}
                         <button
+                            disabled={loading}
                             type="submit"
                             className="mt-8 w-full h-11 rounded-md text-white bg-[#6e44ff] hover:bg-[#5a36d6] transition-all cursor-pointer text-base font-semibold shadow-md"
                         >
-                            Set Sail!
+                            {loading ? "Sailing..." : "Set Sail!"}
                         </button>
 
                         <p className="text-gray-500/90 text-sm mt-2 text-center max-w-[280px]">

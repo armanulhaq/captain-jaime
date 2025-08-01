@@ -1,20 +1,53 @@
 import { Mail, Lock } from "lucide-react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
 
 const Login = ({ isDark }) => {
     const navigate = useNavigate();
 
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [errorMsg, setErrorMsg] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    const loginHandler = async (e) => {
+        e.preventDefault();
+        try {
+            setLoading(true);
+            const res = await fetch(
+                `${import.meta.env.VITE_BACKEND_URL}/api/auth/login`,
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email, password }),
+                }
+            );
+            const data = await res.json();
+            if (!res.ok) {
+                setErrorMsg(data.message);
+                throw new Error(data.message || "Something went wrong");
+            }
+            console.log("Success:", data);
+            setEmail("");
+            setPassword("");
+            setLoading(false);
+            navigate("/chat");
+        } catch (err) {
+            console.error("Registration error:", err.message);
+            setErrorMsg(err.message);
+        }
+    };
+
     return (
         <div
-            className={`min-h-[90dvh] flex flex-col ${
+            className={`min-h-[90dvh] flex flex-col px-10 md:px-0 ${
                 isDark ? "bg-[#10002b]" : "bg-[#f8f7ff]"
             }`}
         >
             <div className="flex flex-col lg:flex-row w-full max-w-4xl min-h-[70dvh] mx-auto rounded-xl my-10 shadow-lg overflow-hidden">
                 {/* Image Section */}
                 <div
-                    className={`flex-1 flex items-center justify-center p-4 ${
+                    className={`flex-1 flex items-center justify-center px-4 ${
                         isDark ? "bg-[#1a1333]" : "bg-[#6e44ff]"
                     }`}
                 >
@@ -31,7 +64,10 @@ const Login = ({ isDark }) => {
                         isDark ? "bg-[#1a1333]" : "bg-white"
                     }`}
                 >
-                    <form className="md:w-96 w-80 flex flex-col items-center justify-center">
+                    <form
+                        onSubmit={loginHandler}
+                        className="md:w-96 w-80 flex flex-col items-center justify-center"
+                    >
                         <h2
                             className={`text-3xl md:text-4xl font-bold flex justify-center items-center gap-2 ${
                                 isDark ? "text-white" : "text-[#6e44ff]"
@@ -58,6 +94,8 @@ const Login = ({ isDark }) => {
                                 }`}
                             />
                             <input
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                                 type="email"
                                 placeholder="Your pirate email"
                                 className={`bg-transparent outline-none text-sm w-full h-full px-5 rounded-r-md ${
@@ -81,6 +119,8 @@ const Login = ({ isDark }) => {
                                 }`}
                             />
                             <input
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
                                 type="password"
                                 placeholder="Your secret code"
                                 className={`bg-transparent outline-none text-sm w-full h-full px-5 rounded-r-md ${
@@ -92,12 +132,18 @@ const Login = ({ isDark }) => {
                                 required
                             />
                         </div>
+                        {errorMsg && (
+                            <p className="text-red-500 mt-3 text-xs">
+                                {errorMsg}
+                            </p>
+                        )}
 
                         <button
+                            disabled={loading}
                             type="submit"
                             className="mt-8 w-full h-11 rounded-md text-white bg-[#6e44ff] hover:bg-[#5a36d6] transition-all cursor-pointer text-base font-semibold shadow-md"
                         >
-                            Set Sail!
+                            {loading ? "Sailing..." : "Set Sail!"}
                         </button>
                         <p
                             className={`text-gray-500/90 text-sm mt-2 ${
