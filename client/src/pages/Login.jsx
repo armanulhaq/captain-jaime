@@ -18,6 +18,7 @@ const Login = ({ isDark }) => {
                 `${import.meta.env.VITE_BACKEND_URL}/api/auth/login`,
                 {
                     method: "POST",
+                    credentials: "include",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ email, password }),
                 }
@@ -35,6 +36,7 @@ const Login = ({ isDark }) => {
         } catch (err) {
             console.error("Registration error:", err.message);
             setErrorMsg(err.message);
+            setLoading(false);
         }
     };
 
@@ -133,7 +135,7 @@ const Login = ({ isDark }) => {
                             />
                         </div>
                         {errorMsg && (
-                            <p className="text-red-500 mt-3 text-xs">
+                            <p className="text-red-500 mt-1 text-xs">
                                 {errorMsg}
                             </p>
                         )}
@@ -141,7 +143,7 @@ const Login = ({ isDark }) => {
                         <button
                             disabled={loading}
                             type="submit"
-                            className="mt-8 w-full h-11 rounded-md text-white bg-[#6e44ff] hover:bg-[#5a36d6] transition-all cursor-pointer text-base font-semibold shadow-md"
+                            className="mt-4 w-full h-11 rounded-md text-white bg-[#6e44ff] hover:bg-[#5a36d6] transition-all cursor-pointer text-base font-semibold shadow-md"
                         >
                             {loading ? "Sailing..." : "Set Sail!"}
                         </button>

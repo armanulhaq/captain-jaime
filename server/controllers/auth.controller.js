@@ -1,5 +1,6 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcrypt";
+import { setUser } from "../middlewares/auth.js";
 
 const register = async (req, res) => {
     const { name, age, email, password, gender } = req.body;
@@ -41,11 +42,36 @@ const register = async (req, res) => {
     }
 };
 
-const login = (req, res) => {
+const login = async (req, res) => {
     const { email, password } = req.body;
-    console.log(email);
-    console.log(password);
-    res.json(200, { message: "Success" });
+    if (!email || !password) {
+        return res.status(400).json({ message: "All fields are required" });
+    }
+
+    try {
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(400).json({ message: "Invalid credentials" });
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ message: "Invalid credentials" });
+        }
+        const token = setUser(user);
+
+        //send a cookie with the respobse
+        res.cookie("token", token, {
+            httpOnly: true, // Prevents JS access — good for security
+            sameSite: "None", // allows us to send from 3000 to 5173
+            secure: "Lax",
+            maxAge: 1000 * 60 * 60, // 1 hour
+        });
+        return res.status(200).json({ message: "Successfully logged you in" });
+    } catch (err) {
+        console.error("Login error:", err);
+        res.status(500).json({ message: "Server error" });
+    }
 };
 
 const authMe = () => {};
