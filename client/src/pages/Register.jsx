@@ -1,11 +1,12 @@
-import { User, Mail, Lock, Cake } from "lucide-react";
+import { User, Mail, Lock, Cake, VenusAndMars } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Register = ({ isDark }) => {
     const [email, setEmail] = useState("");
-    const [age, setAge] = useState(1);
+    const [age, setAge] = useState("");
     const [name, setName] = useState("");
+    const [gender, setGender] = useState("");
     const [password, setPassword] = useState("");
     const [errorMsg, setErrorMsg] = useState("");
     const [loading, setLoading] = useState(false);
@@ -21,7 +22,13 @@ const Register = ({ isDark }) => {
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ name, age, email, password }),
+                    body: JSON.stringify({
+                        name,
+                        age,
+                        email,
+                        password,
+                        gender,
+                    }),
                 }
             );
 
@@ -33,12 +40,13 @@ const Register = ({ isDark }) => {
             setEmail("");
             setPassword("");
             setName("");
-            setAge(1);
+            setAge("");
             setLoading(false);
             navigate("/login");
         } catch (err) {
             console.error("Registration error:", err.message);
             setErrorMsg(err.message);
+            setLoading(false);
         }
     };
     return (
@@ -139,6 +147,34 @@ const Register = ({ isDark }) => {
                                 max={100}
                             />
                         </div>
+                        <div
+                            className={`flex items-center mt-6 w-full border-1 border-[#6e44ff] h-12 pl-3 gap-2 rounded-md transition-colors ${
+                                isDark ? "bg-[#23144a]" : "bg-white"
+                            }`}
+                        >
+                            <VenusAndMars
+                                className={`w-6 h-6 ${
+                                    isDark ? "text-[#a9baff]" : "text-[#6e44ff]"
+                                }`}
+                            />
+                            <select
+                                value={gender}
+                                onChange={(e) => setGender(e.target.value)}
+                                className={`bg-transparent w-full h-full outline-none text-sm px-5 ${
+                                    isDark ? "text-gray-100" : "text-gray-700"
+                                }`}
+                                required
+                            >
+                                <option value="" disabled>
+                                    Select your gender
+                                </option>
+                                <option value="boy">Cabin Boy 🧢</option>
+                                <option value="girl">Cabin Girl 🎀</option>
+                                <option value="other">
+                                    Unique Explorer 🧭
+                                </option>
+                            </select>
+                        </div>
 
                         {/* Email Field */}
                         <div
@@ -193,7 +229,7 @@ const Register = ({ isDark }) => {
                             />
                         </div>
                         {errorMsg && (
-                            <p className="text-red-500 mt-3 text-xs">
+                            <p className="text-red-500 mt-1 text-xs">
                                 {errorMsg}
                             </p>
                         )}
@@ -202,7 +238,7 @@ const Register = ({ isDark }) => {
                         <button
                             disabled={loading}
                             type="submit"
-                            className="mt-8 w-full h-11 rounded-md text-white bg-[#6e44ff] hover:bg-[#5a36d6] transition-all cursor-pointer text-base font-semibold shadow-md"
+                            className="mt-4 w-full h-11 rounded-md text-white bg-[#6e44ff] hover:bg-[#5a36d6] transition-all cursor-pointer text-base font-semibold shadow-md"
                         >
                             {loading ? "Sailing..." : "Set Sail!"}
                         </button>
