@@ -5,7 +5,7 @@ const Home = ({ isDark, user }) => {
     return (
         <>
             <div
-                className={`min-h-[90vh] flex lg:flex-row flex-col items-center justify-center gap-6 xl:gap-10 xl:px-32 px-12 lg:px-24 ${
+                className={`min-h-[90dvh] flex lg:flex-row flex-col items-center justify-center gap-6 xl:gap-10 xl:px-32 px-12 lg:px-24 ${
                     isDark ? "bg-[#10002b]" : "bg-[#f8f7ff]"
                 }`}
             >
@@ -33,8 +33,10 @@ const Home = ({ isDark, user }) => {
                     </p>
 
                     <button
-                        onClick={() => user ? navigate("/chat") : navigate("/login") }
-                        className={`bg-[#6e44ff] hover:bg-[#6e44ff]/90 px-3 py-2 xl:px-6 xl:py-3 text-md md:text-lg xl:text-xl rounded-lg font-semibold w-fit mt-2 cursor-pointer text-white ${
+                        onClick={() =>
+                            user ? navigate("/chat") : navigate("/login")
+                        }
+                        className={`bg-[#6e44ff] hover:bg-[#6e44ff]/90 px-3 py-2 xl:px-6 xl:py-3 text-md md:text-lg rounded-md font-semibold w-fit mt-2 cursor-pointer text-white ${
                             isDark
                                 ? "bg-[#6e44ff] hover:bg-[#6e44ff]/90"
                                 : "bg-[#6e44ff] hover:bg-[#6e44ff]/90"

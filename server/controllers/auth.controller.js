@@ -5,7 +5,6 @@ import { getUser, setUser } from "../middlewares/auth.js";
 const register = async (req, res) => {
     const { name, age, email, password, gender } = req.body;
 
-    // Optional: Validate basic fields
     if (!name || !age || !email || !password || !gender) {
         return res.status(400).json({ message: "All fields are required" });
     }
@@ -76,9 +75,25 @@ const login = async (req, res) => {
 
 const authMe = (req, res) => {
     const token = req.cookies.token;
-    const user = getUser(token);
-    req.user = user;
-    return res.status(200).json({ user: user });
+
+    if (!token) {
+        return res
+            .status(401)
+            .json({ message: "No token provided. Please log in." });
+    }
+
+    try {
+        const user = getUser(token); // should handle verification and throw if invalid
+        req.user = user;
+        return res.status(200).json({ user });
+    } catch (error) {
+        return res
+            .status(401)
+            .json({
+                message: "Invalid or expired token.",
+                error: error.message,
+            });
+    }
 };
 
 const logout = (req, res) => {

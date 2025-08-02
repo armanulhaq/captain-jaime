@@ -75,7 +75,7 @@ const Navbar = ({ isDark, setIsDark, user, setUser }) => {
                         onClick={() => navigate("/login")}
                         className={`w-6 h-6 transition-colors ${
                             isDark
-                                ? "text-white hover:text-green-300"
+                                ? "text-white"
                                 : "text-[#6e44ff] hover:text-[#5a38d9]"
                         }`}
                         title="Login"

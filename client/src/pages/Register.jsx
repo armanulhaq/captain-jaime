@@ -59,7 +59,7 @@ const Register = ({ isDark }) => {
                 {/* Image Section */}
                 <div
                     className={`flex-1 flex items-center justify-center px-4 ${
-                        isDark ? "bg-[#1a1333]" : "bg-[#6e44ff]"
+                        isDark ? "bg-[#1a0040]" : "bg-[#6e44ff]"
                     }`}
                 >
                     <img
@@ -71,7 +71,7 @@ const Register = ({ isDark }) => {
                 {/* Form Section */}
                 <div
                     className={`flex-1 flex flex-col items-center justify-center p-8 ${
-                        isDark ? "bg-[#1a1333]" : "bg-white"
+                        isDark ? "bg-[#240055]" : "bg-white"
                     }`}
                 >
                     <form
@@ -87,22 +87,22 @@ const Register = ({ isDark }) => {
                         </h2>
                         <p
                             className={`text-sm md:text-base mt-3 mb-5 text-center ${
-                                isDark ? "text-gray-200" : "text-gray-700"
+                                isDark ? "text-gray-300" : "text-gray-700"
                             }`}
                         >
-                            Ready to start your adventure? Let’s set sail
+                            Ready to start your adventure? Let's set sail
                             together!
                         </p>
 
                         {/* Name Field */}
                         <div
                             className={`flex items-center w-full border-1 border-[#6e44ff] h-12 pl-3 gap-2 rounded-md transition-colors ${
-                                isDark ? "bg-[#23144a]" : "bg-white"
+                                isDark ? "bg-[#2d006a]" : "bg-white"
                             }`}
                         >
                             <User
                                 className={`w-6 h-6 ${
-                                    isDark ? "text-[#a9baff]" : "text-[#6e44ff]"
+                                    isDark ? "text-[#a78bfa]" : "text-[#6e44ff]"
                                 }`}
                             />
                             <input
@@ -123,12 +123,12 @@ const Register = ({ isDark }) => {
                         {/* Age Field */}
                         <div
                             className={`flex items-center mt-6 w-full border-1 border-[#6e44ff] h-12 pl-3 gap-2 rounded-md transition-colors ${
-                                isDark ? "bg-[#23144a]" : "bg-white"
+                                isDark ? "bg-[#2d006a]" : "bg-white"
                             }`}
                         >
                             <Cake
                                 className={`w-6 h-6 ${
-                                    isDark ? "text-[#a9baff]" : "text-[#6e44ff]"
+                                    isDark ? "text-[#a78bfa]" : "text-[#6e44ff]"
                                 }`}
                             />
                             <input
@@ -149,12 +149,12 @@ const Register = ({ isDark }) => {
                         </div>
                         <div
                             className={`flex items-center mt-6 w-full border-1 border-[#6e44ff] h-12 pl-3 gap-2 rounded-md transition-colors ${
-                                isDark ? "bg-[#23144a]" : "bg-white"
+                                isDark ? "bg-[#2d006a]" : "bg-white"
                             }`}
                         >
                             <VenusAndMars
                                 className={`w-6 h-6 ${
-                                    isDark ? "text-[#a9baff]" : "text-[#6e44ff]"
+                                    isDark ? "text-[#a78bfa]" : "text-[#6e44ff]"
                                 }`}
                             />
                             <select
@@ -179,12 +179,12 @@ const Register = ({ isDark }) => {
                         {/* Email Field */}
                         <div
                             className={`flex items-center mt-6 w-full border-1 border-[#6e44ff] h-12 rounded-md pl-3 gap-2 transition-colors ${
-                                isDark ? "bg-[#23144a]" : "bg-white"
+                                isDark ? "bg-[#2d006a]" : "bg-white"
                             }`}
                         >
                             <Mail
                                 className={`w-6 h-6 ${
-                                    isDark ? "text-[#a9baff]" : "text-[#6e44ff]"
+                                    isDark ? "text-[#a78bfa]" : "text-[#6e44ff]"
                                 }`}
                             />
                             <input
@@ -205,12 +205,12 @@ const Register = ({ isDark }) => {
                         {/* Password Field */}
                         <div
                             className={`flex items-center mt-6 w-full border-1 border-[#6e44ff] h-12 rounded-md pl-3 gap-2 transition-colors ${
-                                isDark ? "bg-[#23144a]" : "bg-white"
+                                isDark ? "bg-[#2d006a]" : "bg-white"
                             }`}
                         >
                             <Lock
                                 className={`w-6 h-6 ${
-                                    isDark ? "text-[#a9baff]" : "text-[#6e44ff]"
+                                    isDark ? "text-[#a78bfa]" : "text-[#6e44ff]"
                                 }`}
                             />
                             <input
@@ -229,7 +229,7 @@ const Register = ({ isDark }) => {
                             />
                         </div>
                         {errorMsg && (
-                            <p className="text-red-500 mt-1 text-xs">
+                            <p className="text-red-400 mt-1 text-xs">
                                 {errorMsg}
                             </p>
                         )}
@@ -238,16 +238,26 @@ const Register = ({ isDark }) => {
                         <button
                             disabled={loading}
                             type="submit"
-                            className="mt-4 w-full h-11 rounded-md text-white bg-[#6e44ff] hover:bg-[#5a36d6] transition-all cursor-pointer text-base font-semibold shadow-md"
+                            className={`mt-4 w-full h-11 rounded-md text-white transition-all cursor-pointer text-base font-semibold shadow-md ${
+                                isDark
+                                    ? "bg-[#7c3aed] hover:bg-[#6d28d9]"
+                                    : "bg-[#6e44ff] hover:bg-[#5a36d6]"
+                            }`}
                         >
                             {loading ? "Sailing..." : "Set Sail!"}
                         </button>
 
-                        <p className="text-gray-500/90 text-sm mt-2 text-center max-w-[280px]">
+                        <p
+                            className={`text-sm mt-2 text-center max-w-[280px] ${
+                                isDark ? "text-gray-300" : "text-gray-500/90"
+                            }`}
+                        >
                             Already part of the crew?{" "}
                             <span
                                 onClick={() => navigate("/login")}
-                                className="text-[#6e44ff] hover:underline cursor-pointer font-bold"
+                                className={`hover:underline cursor-pointer font-bold ${
+                                    isDark ? "text-[#a78bfa]" : "text-[#6e44ff]"
+                                }`}
                             >
                                 Sign In
                             </span>
