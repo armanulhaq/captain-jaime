@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-const Home = ({ isDark }) => {
+const Home = ({ isDark, user }) => {
     const navigate = useNavigate();
     return (
         <>
@@ -33,7 +33,7 @@ const Home = ({ isDark }) => {
                     </p>
 
                     <button
-                        onClick={() => navigate("/register")}
+                        onClick={() => user ? navigate("/chat") : navigate("/login") }
                         className={`bg-[#6e44ff] hover:bg-[#6e44ff]/90 px-3 py-2 xl:px-6 xl:py-3 text-md md:text-lg xl:text-xl rounded-lg font-semibold w-fit mt-2 cursor-pointer text-white ${
                             isDark
                                 ? "bg-[#6e44ff] hover:bg-[#6e44ff]/90"

@@ -1,62 +1,85 @@
-import { useLocation, useNavigate } from "react-router-dom";
-import { Moon, Sun, User } from "lucide-react";
-import { useEffect } from "react";
-import { useState } from "react";
-const Navbar = ({ isDark, setIsDark }) => {
-    const navigate = useNavigate();
-    const [user, setUser] = useState(null);
-    const location = useLocation();
+import { useNavigate } from "react-router-dom";
+import { LogIn, LogOut, Moon, Sun } from "lucide-react";
 
-    useEffect(() => {
-        const fetchUser = async () => {
+const Navbar = ({ isDark, setIsDark, user, setUser }) => {
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        try {
             const res = await fetch(
-                `${import.meta.env.VITE_BACKEND_URL}/api/auth/me`,
+                `${import.meta.env.VITE_BACKEND_URL}/api/auth/logout`,
                 {
+                    method: "POST",
                     credentials: "include",
                 }
             );
-            if (res.status === 401) {
-                setUser(null);
-            } else if (!res.ok) {
-                console.error(`Unexpected error: ${res.status}`);
-                setUser(null);
-            } else {
-                const data = await res.json();
-                setUser(data);
+
+            setUser(null);
+            navigate("/");
+
+            if (!res.ok) {
+                console.error("Logout failed: Server returned non-ok status");
             }
-        };
-        fetchUser();
-    }, [location]); // fetch user info when URL changes
-    console.log(user?.user?.name);
-    console.log(user);
+        } catch (error) {
+            console.error("Logout failed:", error);
+        }
+    };
+
+    const toggleTheme = () => setIsDark((prev) => !prev);
+
     return (
         <div
             className={`min-h-[10vh] flex justify-between px-7 md:px-12 lg:px-24 xl:px-48 items-center ${
                 isDark ? "bg-[#10002b]" : "bg-[#f8f7ff]"
             }`}
         >
-            <div className="flex gap-3 items-center justify-center">
-                <div
-                    className={`font-extrabold xl:text-2xl lg:text-xl text-md cursor-pointer ${
-                        isDark ? "text-white" : "text-[#6e44ff]"
-                    }`}
-                    onClick={() => navigate("/")}
-                >
-                    Captain Jaime
-                </div>
-            </div>
             <div
-                className="cursor-pointer flex gap-6 w-fit"
-                onClick={(e) => {
-                    e.stopPropagation();
-                    setIsDark((isDark) => !isDark);
-                }}
+                className={`font-extrabold xl:text-2xl lg:text-xl text-md cursor-pointer ${
+                    isDark ? "text-white" : "text-[#6e44ff]"
+                }`}
+                onClick={() => navigate("/")}
             >
-                {user && <div className="">Hey, {user.user.name}</div>}
+                Captain Jaime
+            </div>
+            <div className="cursor-pointer flex gap-6 items-center">
+                {user && (
+                    <span className={isDark ? "text-white" : "text-[#6e44ff]"}>
+                        Hey, {user.name}
+                    </span>
+                )}
                 {isDark ? (
-                    <Sun className="w-6 h-6 text-white" />
+                    <Sun
+                        onClick={toggleTheme}
+                        className="w-6 h-6 text-white hover:text-yellow-300 transition-colors"
+                        title="Light mode"
+                    />
                 ) : (
-                    <Moon className="w-6 h-6 text-[#6e44ff]" />
+                    <Moon
+                        onClick={toggleTheme}
+                        className="w-6 h-6 text-[#6e44ff] hover:text-[#5a38d9] transition-colors"
+                        title="Dark mode"
+                    />
+                )}
+                {user ? (
+                    <LogOut
+                        onClick={handleLogout}
+                        className={`w-6 h-6 transition-colors ${
+                            isDark
+                                ? "text-white hover:text-red-300"
+                                : "text-[#6e44ff] hover:text-[#5a38d9]"
+                        }`}
+                        title="Logout"
+                    />
+                ) : (
+                    <LogIn
+                        onClick={() => navigate("/login")}
+                        className={`w-6 h-6 transition-colors ${
+                            isDark
+                                ? "text-white hover:text-green-300"
+                                : "text-[#6e44ff] hover:text-[#5a38d9]"
+                        }`}
+                        title="Login"
+                    />
                 )}
             </div>
         </div>

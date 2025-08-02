@@ -2,7 +2,7 @@ import { Mail, Lock } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Login = ({ isDark }) => {
+const Login = ({ isDark, fetchUser }) => {
     const navigate = useNavigate();
 
     const [email, setEmail] = useState("");
@@ -28,13 +28,13 @@ const Login = ({ isDark }) => {
                 setErrorMsg(data.message);
                 throw new Error(data.message || "Something went wrong");
             }
-            console.log("Success:", data);
             setEmail("");
             setPassword("");
-            setLoading(false);
+            await fetchUser(); // Ensuring user state updates
             navigate("/chat");
+            setLoading(false);
         } catch (err) {
-            console.error("Registration error:", err.message);
+            console.error("Login error:", err.message);
             setErrorMsg(err.message);
             setLoading(false);
         }

@@ -81,6 +81,14 @@ const authMe = (req, res) => {
     return res.status(200).json({ user: user });
 };
 
-const logout = () => {};
+const logout = (req, res) => {
+    res.cookie("token", "", {
+        maxAge: 0,
+        httpOnly: true,
+        sameSite: "None",
+        secure: true,
+    });
+    return res.status(200).json({ message: "Logged out" });
+};
 
 export { register, login, authMe, logout };

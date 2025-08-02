@@ -8,6 +8,8 @@ await connectDB();
 
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
+
 app.use(
     cors({
         origin: "http://localhost:5173",
@@ -16,7 +18,6 @@ app.use(
         allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
     })
 );
-app.use(cookieParser());
 
 app.get("/", (req, res) => {
     res.json("I am okay");
